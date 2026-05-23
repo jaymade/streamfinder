@@ -54,5 +54,19 @@ export function sortSources(sources, activeIds) {
     return { ...src, serviceId, isActive, rank }
   })
 
-  return ranked.sort((a, b) => a.rank - b.rank)
+  // Deduplicate by service name + type, keeping lowest price
+  const seen = new Map()
+  for (const src of ranked) {
+    const key = `${src.name}-${src.type}`
+    if (!seen.has(key)) {
+      seen.set(key, src)
+    } else {
+      const existing = seen.get(key)
+      if ((src.price ?? 999) < (existing.price ?? 999)) {
+        seen.set(key, src)
+      }
+    }
+  }
+
+  return Array.from(seen.values()).sort((a, b) => a.rank - b.rank)
 }
