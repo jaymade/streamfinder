@@ -1,25 +1,29 @@
 const BASE = 'https://api.watchmode.com/v1'
 const KEY = import.meta.env.VITE_WATCHMODE_API_KEY
 
+export async function getWatchmodeIdByName(name) {
+  const res = await fetch(
+    `${BASE}/search/?apiKey=${KEY}&search_field=name&search_value=${encodeURIComponent(name)}`
+  )
+  const data = await res.json()
+  return data.title_results?.[0]?.id ?? null
+}
+
 export async function getWatchmodeId(tmdbId, mediaType) {
   const type = mediaType === 'movie' ? 'movie' : 'tv'
-  const url = `${BASE}/search/?apiKey=${KEY}&search_field=tmdb_${type}_id&search_value=${tmdbId}`
-  console.log('Watchmode URL:', url)
-  console.log('Key value:', KEY)
-  const res = await fetch(url)
-  console.log('Response status:', res.status)
+  const res = await fetch(
+    `${BASE}/search/?apiKey=${KEY}&search_field=tmdb_${type}_id&search_value=${tmdbId}`
+  )
   const data = await res.json()
-  console.log('Response data:', data)
   return data.title_results?.[0]?.id ?? null
 }
 
 export async function getStreamingAvailability(watchmodeId) {
   if (!watchmodeId) return []
-  const url = `${BASE}/title/${watchmodeId}/sources/?apiKey=${KEY}&regions=US`
-  console.log('Sources URL:', url)
-  const res = await fetch(url)
+  const res = await fetch(
+    `${BASE}/title/${watchmodeId}/sources/?apiKey=${KEY}&regions=US`
+  )
   const data = await res.json()
-  console.log('Sources data:', data)
   return Array.isArray(data) ? data : []
 }
 

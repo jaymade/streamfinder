@@ -28,6 +28,7 @@
 
       <div class="title-header">
         <img v-if="store.selectedTitle.poster" :src="store.selectedTitle.poster" />
+        <div v-else class="no-poster">No image</div>
         <div>
           <h2>{{ store.selectedTitle.title }}</h2>
           <p class="year">{{ store.selectedTitle.year }} · {{ store.selectedTitle.media_type }}</p>
@@ -56,6 +57,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useSearchStore } from '../stores/search'
+import { getWatchmodeIdByName } from '../services/watchmode'
 import ResultCard from '../components/ResultCard.vue'
 import ServiceBadge from '../components/ServiceBadge.vue'
 
@@ -68,7 +70,7 @@ async function handleSearch() {
 }
 
 async function handleSelect(title) {
-  // Use watchmode_id from mock data directly, no lookup needed
-  await store.selectTitle(title)
+  const watchmodeId = await getWatchmodeIdByName(title.title)
+  await store.selectTitle({ ...title, watchmode_id: watchmodeId })
 }
 </script>
