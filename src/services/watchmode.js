@@ -1,0 +1,54 @@
+const BASE = 'https://api.watchmode.com/v1'
+const KEY = import.meta.env.VITE_WATCHMODE_API_KEY
+
+export async function getWatchmodeId(tmdbId, mediaType) {
+  const type = mediaType === 'movie' ? 'movie' : 'tv'
+  const url = `${BASE}/search/?apiKey=${KEY}&search_field=tmdb_${type}_id&search_value=${tmdbId}`
+  console.log('Watchmode URL:', url)
+  console.log('Key value:', KEY)
+  const res = await fetch(url)
+  console.log('Response status:', res.status)
+  const data = await res.json()
+  console.log('Response data:', data)
+  return data.title_results?.[0]?.id ?? null
+}
+
+export async function getStreamingAvailability(watchmodeId) {
+  if (!watchmodeId) return []
+  const url = `${BASE}/title/${watchmodeId}/sources/?apiKey=${KEY}&regions=US`
+  console.log('Sources URL:', url)
+  const res = await fetch(url)
+  const data = await res.json()
+  console.log('Sources data:', data)
+  return Array.isArray(data) ? data : []
+}
+
+const SOURCE_MAP = {
+  203: 'netflix',
+  157: 'hulu',
+  26:  'prime',
+  387: 'max',
+  372: 'disney',
+  371: 'appletv',
+  386: 'peacock',
+  389: 'paramount',
+}
+
+export function sortSources(sources, activeIds) {
+  const ranked = sources.map(src => {
+    const serviceId = SOURCE_MAP[src.source_id] ?? src.name?.toLowerCase().replace(/\s+/g, '_')
+    const isActive = activeIds.includes(serviceId)
+
+    let rank
+    if (src.type === 'sub' && isActive) rank = 0
+    else if (src.type === 'sub')        rank = 1
+    else if (src.type === 'free')       rank = 2
+    else if (src.type === 'rent')       rank = 3
+    else if (src.type === 'buy')        rank = 4
+    else                                rank = 5
+
+    return { ...src, serviceId, isActive, rank }
+  })
+
+  return ranked.sort((a, b) => a.rank - b.rank)
+}

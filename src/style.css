@@ -1,0 +1,285 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #0f0f0f;
+  color: #e8e8e8;
+  min-height: 100vh;
+}
+
+nav {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem 2rem;
+  background: #1a1a1a;
+  border-bottom: 1px solid #2a2a2a;
+}
+
+nav a {
+  color: #a0a0a0;
+  text-decoration: none;
+  font-size: 0.95rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+
+nav a:hover { color: #fff; background: #2a2a2a; }
+nav a.router-link-active { color: #fff; background: #2a2a2a; }
+
+main { max-width: 900px; margin: 0 auto; padding: 2rem; }
+
+/* Search */
+.search-view h1 { display: none; }
+
+.search-bar {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  color: #e8e8e8;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-bar input:focus { border-color: #555; }
+
+.search-bar button {
+  padding: 0.75rem 1.5rem;
+  background: #e50914;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.search-bar button:hover { background: #f40612; }
+.search-bar button:disabled { background: #555; cursor: not-allowed; }
+
+/* Results */
+.results {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.result-card {
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.result-card:hover { border-color: #555; background: #222; }
+
+.result-card img {
+  width: 60px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.no-poster {
+  width: 60px;
+  height: 90px;
+  background: #2a2a2a;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: #555;
+  flex-shrink: 0;
+}
+
+.result-card .info h3 { font-size: 0.95rem; margin-bottom: 0.25rem; }
+.result-card .info .meta { font-size: 0.75rem; color: #888; margin-bottom: 0.5rem; }
+.result-card .info .overview {
+  font-size: 0.78rem;
+  color: #aaa;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Detail */
+.back {
+  background: none;
+  border: 1px solid #2a2a2a;
+  color: #aaa;
+  padding: 0.4rem 0.9rem;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-bottom: 1.5rem;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.back:hover { border-color: #555; color: #fff; }
+
+.title-header {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.title-header img {
+  width: 120px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+.title-header h2 { font-size: 1.6rem; margin-bottom: 0.4rem; }
+.title-header .year { color: #888; font-size: 0.9rem; margin-bottom: 0.75rem; }
+.title-header .overview { color: #bbb; line-height: 1.6; font-size: 0.9rem; }
+
+/* Sources */
+.sources h3 { font-size: 1rem; color: #aaa; margin-bottom: 1rem; }
+
+.sources {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.service-badge {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  transition: border-color 0.2s;
+}
+
+.service-badge.is-active { border-color: #2d6a2d; background: #1a2a1a; }
+.service-badge.is-free   { border-color: #2d4a6a; background: #1a1a2a; }
+.service-badge.is-rent   { border-color: #3a3a1a; background: #2a2a1a; }
+.service-badge.is-buy    { border-color: #3a1a1a; background: #2a1a1a; }
+
+.service-badge .name { font-weight: 500; flex: 1; }
+
+.service-badge .type {
+  font-size: 0.8rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  background: #2a2a2a;
+  color: #aaa;
+}
+
+.is-active .type { background: #2d6a2d; color: #8f8; }
+.is-free .type   { background: #1a3a5a; color: #8af; }
+.is-rent .type   { background: #3a3a1a; color: #fa8; }
+.is-buy .type    { background: #3a1a1a; color: #f88; }
+
+.service-badge a {
+  color: #aaa;
+  font-size: 0.85rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.service-badge a:hover { color: #fff; }
+
+/* Subscriptions */
+.subscriptions-view h2 { font-size: 1.4rem; margin-bottom: 0.5rem; }
+.hint { color: #888; font-size: 0.9rem; margin-bottom: 1.5rem; }
+
+.service-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.service-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+}
+
+.service-list label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.service-list input[type="checkbox"] { width: 16px; height: 16px; cursor: pointer; }
+
+.remove {
+  background: none;
+  border: 1px solid #3a1a1a;
+  color: #f88;
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: all 0.2s;
+}
+
+.remove:hover { background: #3a1a1a; }
+
+.add-service h3 { font-size: 1rem; margin-bottom: 0.75rem; color: #aaa; }
+
+.add-service {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.add-service input {
+  flex: 1;
+  padding: 0.65rem 1rem;
+  background: #1a1a1a;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+  color: #e8e8e8;
+  font-size: 0.95rem;
+  outline: none;
+}
+
+.add-service input:focus { border-color: #555; }
+
+.add-service button {
+  padding: 0.65rem 1.2rem;
+  background: #2a2a2a;
+  color: #e8e8e8;
+  border: 1px solid #3a3a3a;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.add-service button:hover { background: #333; border-color: #555; }
+
+.error { color: #f88; margin-bottom:1rem; font-size: 0.9rem; }
+.loading { color: #888; font-size: 0.9rem; }
+.no-sources { color: #666; font-size: 0.9rem; }
